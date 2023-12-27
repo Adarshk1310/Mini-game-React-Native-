@@ -14,7 +14,10 @@ const styles =StyleSheet.create({
         fontSize:30,
         color:'white',
         textAlign:'center',
-        padding:12
+        padding:12,
+        maxWidth:'80%',
+        width:300,
+     
     }
 })
 

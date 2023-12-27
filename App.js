@@ -15,12 +15,11 @@ export default function App() {
   const[guessRounds,setGuessRounds] =useState(0);
 
  const [fontsLoaded] = useFonts({
-    'open-sans':require('./assets/fonts/OpenSans-Regular.ttf'),
-    'open-sans-bold':require('./assets/fonts/OpenSans-Bold.ttf')
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')
 
   });
 
- 
 
 
   function StartGameNumber(pickedNumber){

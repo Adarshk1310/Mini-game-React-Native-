@@ -1,4 +1,4 @@
-import { Text,View,StyleSheet,Alert, FlatList} from "react-native";
+import { Text,View,StyleSheet,Alert, FlatList, useWindowDimensions} from "react-native";
 import Title from "../components/ui/Title";
 import { useEffect, useState } from "react";
 import NumberContainer from "../components/game/NumberContainer";
@@ -28,6 +28,7 @@ function generateRandomBetween(min, max, exclude) {
     const intialGuess =generateRandomBetween(1,100,userNumber);
     const [currentGuess,setCurrentGuess] =useState(intialGuess);
     const [guessRounds,setGuessRounds] =useState([intialGuess]);
+    const {width,height} =useWindowDimensions();
     
 
     useEffect(()=>{
@@ -64,12 +65,9 @@ function generateRandomBetween(min, max, exclude) {
     const guessRoundsLength= guessRounds.length;
 
 
-
-    return ( <View style={styles.screen}>
-        
-        <Title>Opponent's Guess</Title>
-        <NumberContainer>{currentGuess}</NumberContainer>
-        <Card>
+    let content = (<>
+                <NumberContainer>{currentGuess}</NumberContainer>
+             <Card>
             <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText>
             <View style={styles.buttonsContainer}>  
                <View style={styles.buttonContainer}><PrimaryButton onPress={nextGuessHandler.bind(this,'lower')}><Ionicons name="md-remove" size={24} color="white" /></PrimaryButton></View>
@@ -77,8 +75,27 @@ function generateRandomBetween(min, max, exclude) {
             </View>
 
             </Card>
+    </>)
+    
+
+    if(width > 500){
+        content= (<> 
+            <View style={styles.buttonsContainerWide}>
+               <View style={styles.buttonContainer}><PrimaryButton onPress={nextGuessHandler.bind(this,'lower')}><Ionicons name="md-remove" size={24} color="white" /></PrimaryButton></View>
+                 <NumberContainer>{currentGuess}</NumberContainer>
+               <View style={styles.buttonContainer}><PrimaryButton onPress={nextGuessHandler.bind(this,'greater')}><Ionicons name="md-add" size={24} color="white" /></PrimaryButton></View>
+
+            </View>
+        </>)
+}
+
+
+    return ( <View style={styles.screen}>
+        
+        <Title>Opponent's Guess</Title>
+         {content}
         <View style={styles.listContainer}>
-            {/* {guessRounds.map((guessRound,i)=><Text key={guessRound}>{guessRound}</Text>)} */}
+            
             <FlatList 
             data={guessRounds} 
             renderItem={(itemData)=><GuessLogItem roundNumber={guessRoundsLength - itemData.index} guess={itemData.item}/>}
@@ -96,7 +113,12 @@ function generateRandomBetween(min, max, exclude) {
         flex:1,
         marginTop:20,
         padding:24,
+        alignItems:'center'
 
+    },
+    buttonsContainerWide:{
+        flexDirection:'row',
+        alignItems:'center'
     },
     instructionText:{
         marginBottom:12
